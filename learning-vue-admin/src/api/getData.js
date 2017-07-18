@@ -35,5 +35,33 @@ const cityGuess = () => fetch('/v1/cities',{
 const getResturants = data => fetch('/shopping/restaurants', data);
 //获取店铺总量
 const getResturantsCount = () => fetch('/shopping/restaurants/count');
-export { getAdminInfo,login,singout,apiCount,apiAllCount,userCount,orderCount,adminDayCount,adminCount,getUserCount,getOrderCount,getUserList,cityGuess,getResturants,getResturantsCount }
+/**
+ * 获取当前店铺食品种类
+ */
+const getCategory = restaurant_id => fetch('/shopping/getcategory/' + restaurant_id)
+/**
+ * 城市框的模糊搜索
+ */
+const searchplace = (cityid,value) => fetch('/v1/pois',{
+  type:'search',
+  city_id : cityid,
+  keyword : value
+})
+
+export { getAdminInfo,
+  login,
+  singout,
+  apiCount,
+  apiAllCount,
+  userCount,
+  orderCount,
+  adminDayCount,
+  adminCount,
+  getUserCount,getOrderCount,
+  getUserList,cityGuess,
+  getResturants,
+  getResturantsCount,
+  getCategory,
+  searchplace
+  }
 
