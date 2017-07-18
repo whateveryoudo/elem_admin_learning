@@ -192,6 +192,7 @@
                 }
             },
             async getResturants(){
+                debugger;
                 const {latitude, longitude} = this.city;
                 const restaurants = await getResturants({latitude, longitude, offset: this.offset, limit: this.limit});
                 this.tableData = [];

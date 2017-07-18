@@ -98,6 +98,7 @@
 							resArr[Math.floor(index/7)].push(item.count)
 						}
 					})
+
 					this.sevenDate = resArr;
 
     			}).catch(err => {

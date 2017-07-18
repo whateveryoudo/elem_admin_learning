@@ -25,6 +25,15 @@ const getOrderCount = data => fetch('/bos/orders/count', data);
 const adminDayCount = date => fetch('/statis/admin/' + date + '/count');
 //总管理员注册量
 const adminCount = () => fetch('/admin/count');
-
-export { getAdminInfo,login,singout,apiCount,apiAllCount,userCount,orderCount,adminDayCount,adminCount,getUserCount,getOrderCount }
+//获取用户列表
+const getUserList = data => fetch('/v1/users/list', data);
+//获取当前城市信息
+const cityGuess = () => fetch('/v1/cities',{
+    type : 'guess'
+});
+//获取店铺信息列表
+const getResturants = data => fetch('/shopping/restaurants', data);
+//获取店铺总量
+const getResturantsCount = () => fetch('/shopping/restaurants/count');
+export { getAdminInfo,login,singout,apiCount,apiAllCount,userCount,orderCount,adminDayCount,adminCount,getUserCount,getOrderCount,getUserList,cityGuess,getResturants,getResturantsCount }
 

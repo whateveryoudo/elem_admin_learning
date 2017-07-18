@@ -19,7 +19,7 @@
             this.initData();
         },
         props : ['sevenDate','sevenDay'],
-        methods : {
+        methods : {//查询api熟悉
             initData(){
                 const colors = ['#d14a61', '#5793f3', '#675bba', '#13CE66'];
                 const option = {
@@ -36,7 +36,7 @@
                     },
                     toolbox : {
                         show : true,
-                        featrue : {
+                        feature : {
                             dataZoom : {
                                 yAxisIndex : 'none',
                             },
@@ -152,3 +152,10 @@
         }
     }
 </script>
+<style lang="scss" scoped>
+    @import "src/style/scss/mixin";
+    .line1{
+        display: flex;
+        justify-content: center;
+    }
+</style>

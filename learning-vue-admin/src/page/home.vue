@@ -44,6 +44,7 @@
                 allOrderCount : null,
                 allAdminCount : null,
                 sevenDay : [],//横坐标日期
+                sevenDate : [[],[],[],[]]//4项数据值
             }
         },
         computed : {
@@ -103,8 +104,7 @@
                             resArr[Math.floor(index / 7)].push(item.count);
                         }
                     })
-
-                    this.sevenDate = res.Arr;
+                    this.sevenDate = resArr;
                 }).catch(err => {
                     console.log(err);
                 })
