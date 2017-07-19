@@ -50,7 +50,7 @@
             </el-table>
             <!--分页-->
             <div class="Pagination">
-                <el-pagination @size-change="handleSzieChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="20" layout="total,prev,pager,next" :total="count"></el-pagination>
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="20" layout="total,prev,pager,next" :total="count"></el-pagination>
             </div>
           <!-- 编辑弹框-->
           <el-dialog title="修改店铺信息" v-model="dialogFormVisible">
@@ -65,17 +65,45 @@
                 </el-autocomplete>
                 <span>当前城市：{{city.name}}</span>
               </el-form-item>
+                <el-form-item label="店铺介绍" label-width="100px">
+                    <el-input v-model="selectTable.description"></el-input>
+                </el-form-item>
+                <el-form-item label="联系电话" label-width="100px">
+                    <el-input v-model="selectTable.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="店铺分类" label-width="100px">
+                    <!--连级选择器 options数据源 -->
+                    <el-cascader :options="categoryOptions" v-model="selectedCategory" change-on-select>
+
+                    </el-cascader>
+                </el-form-item>
+                <!--图片上传-->
+                <el-form-item label="商品图片" label-width="100px">
+                    <el-upload class="avatar-uploader" :action="baseUrl + '/v1/addimg/shop'" :show-file-list="false" :on-success="handleServiceAvatarSuccess" :before-upload="beforeAvatarUpload">
+                        <img v-if="selectTable.image_path" :src="baseImgPath + selectTable.image_path" class="avatar" alt="">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
             </el-form>
+              <!--底部操作按钮-->
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="updateShop">确定</el-button>
+              </div>
+
           </el-dialog>
         </div>
     </div>
 </template>
 <script>
     import headTop from '@/components/header/headTop'
-    import { cityGuess,getResturants,getResturantsCount,getCategory,searchplace } from '@/api/getData'
+    import { baseUrl,baseImgPath } from '@/config/env'
+    import { cityGuess,getResturants,getResturantsCount,updateResturant,getCategory,searchplace,foodCategory,deleteResturant } from '@/api/getData'
     export default{
         data(){
             return{
+                baseUrl,
+                baseImgPath,
                 tableData : [],
                 city : {},
                 count : 0,
@@ -84,7 +112,7 @@
               currentPage : 1,
               dialogFormVisible : false,
               selectTable : {},
-              categoryOptions : [],//店铺商品分类
+              categoryOptions : [],//店铺分类
               selectedCategory : [],
               address : {}
             }
@@ -109,6 +137,11 @@
                     console.log('获取数据失败',err);
                 }
             },
+            //添加食品
+            addFood(index,row){
+                this.$router.push({path : 'addGoods',query : { restaurant_id : row.id}});
+            },
+            //编辑
           handleEdit(index,row){
             this.selectTable = row;
             this.address.address = row.address;
@@ -118,6 +151,27 @@
               this.getCategory();
             }
           },
+            //删除
+          async  handleDelete(index,row){
+              try{
+                  const res = await deleteResturant(row.id);
+                  if(res.status == 1){
+                      this.$message({
+                          type : "success",
+                          message : "删除店铺成功"
+                      })
+                      this.tableData.splice(index,1);//去除当前项
+                  }else{
+                      throw new Error(res.message);
+                  }
+              }catch(err){
+                  this.$message({
+                      type : "error",
+                      message : err.message
+                  })
+                    console.log("删除店铺失败",err)
+              }
+            },
           //模糊搜索
           //map与foreach区别
           //foreach没有返回值不对原来数组进行修改，；但是可以自己通过数组的索引来修改原来的数组；
@@ -162,6 +216,81 @@
                     tableData.image_path = item.image_path;
                     this.tableData.push(tableData);
                 })
+            },
+            //上传之前回调
+            beforeAvatarUpload(file){
+                const isRightType = file.type === 'image/jpg' || file.type === 'image/png';
+                const isLt2M = file.size / 1024 / 1024 < 2;//小于2m
+                if(!isRightType){
+                    this.$message.error("上传图片只能为jpg/png格式");
+                }
+                if(!isLt2M){
+                    this.$message.error("上传图片最大为2M");
+                }
+                return isRightType || isLt2M;
+            },
+            //上传图片成功回调
+            handleServiceAvatarSuccess(res,file){
+                if(res.status == 1){
+                    this.selectTable.image_path = res.image_path;
+                }else{
+                    this.$message.error("上传图片失败");
+                }
+            },
+            //获取食品分类
+            async getCategory(){//处理店铺分类数据
+                try{
+                    const categories = await foodCategory();
+                    categories.forEach(item => {
+                        if(item.sub_categories.length){//无子项
+                            const addnew = {
+                                value : item.name,
+                                label : item.name,
+                                children : []
+                            }
+                            item.sub_categories.forEach((subitem,index) => {
+                                if(index == 0){return}//排除全部商品
+                                addnew.children.push({
+                                    value : subitem.name,
+                                    label : subitem.name
+                                })
+                            })
+                            this.categoryOptions.push(addnew);
+                        }
+                    })
+                    console.log(this.categoryOptions);
+                }catch(err){
+                    console.log('获取商铺种类失败',err);
+                }
+            },
+            handleCurrentChange(){
+
+            },
+            handleSizeChange(val){
+                console.log(`每页 ${val} 条`);
+            },
+            //点击确定保存
+            async updateShop(){
+                this.dialogFormVisible = false;//关闭弹框
+                try{
+                // 浅拷贝、对象属性的合并
+                    Object.assign(this.selectTable,this.address);
+                    this.selectTable.category = this.selectedCategory.join("/");//设置选择的店铺与对应商品
+                    const res = await updateResturant(this.selectTable);//跟新列表
+                    if(res.status == 1){
+                        this.$message({
+                            type : "success",
+                            message : "店铺信息跟新成功"
+                        })
+                    }else{
+                        this.$message({
+                            type : "error",
+                            message : res.message
+                        })
+                    }
+                }catch(err){
+                    console.log("跟新店铺信息失败",err);
+                }
             }
         }
     }
@@ -183,4 +312,36 @@
     margin-bottom:0;
     width:50%
   }
+    /*列表*/
+    .table_container{
+        padding-top:20px;
+    }
+    .Pagination{
+        display: flex;
+        justify-content: flex-start;
+        margin-top:8px;
+    }
+    /*头像上传容器*/
+    .avatar-uploader .el-upload{
+        border:1px dashed #d9d9d9;
+        border-radius:6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover{
+        border-color:#20a0ff;
+    }
+    .avatar-uploader-icon{
+        font-size:28px;
+        color:#8c939d;
+        width:120px;
+        height:120px;
+        text-align: center;
+    }
+    .avatar{
+        width:120px;
+        height:120px;
+        display: block;
+    }
 </style>

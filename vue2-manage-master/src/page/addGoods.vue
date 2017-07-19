@@ -203,7 +203,8 @@
 		          showCancelButton: true,
 		          confirmButtonText: '确定',
 		          cancelButtonText: '取消',
-		          beforeClose: (action, instance, done) => {
+		          beforeClose: (action, instance, done) => {//action操作类型 instance 实例本身 done关闭
+
 		            if (action === 'confirm') {
 		              this.$router.push('/shopList');
 		              done();

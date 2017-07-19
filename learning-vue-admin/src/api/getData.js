@@ -36,7 +36,7 @@ const getResturants = data => fetch('/shopping/restaurants', data);
 //获取店铺总量
 const getResturantsCount = () => fetch('/shopping/restaurants/count');
 /**
- * 获取当前店铺食品种类
+ * 获取当前店铺种类
  */
 const getCategory = restaurant_id => fetch('/shopping/getcategory/' + restaurant_id)
 /**
@@ -47,6 +47,14 @@ const searchplace = (cityid,value) => fetch('/v1/pois',{
   city_id : cityid,
   keyword : value
 })
+//获取食品分类
+const foodCategory = (latitude,longitude) => fetch('/shopping/v2/restaurant/category')
+//跟新店铺列表
+const updateResturant = data => fetch('/shopping/updateshop',data,'POST')
+//删除当前店铺
+const deleteResturant = restaurant_id => fetch('/shopping/restaurant/' + restaurant_id,{},'DELETE');
+//在当前店铺下添加食物
+const addCategory = data => fetch('/shopping/addcategory',data,'POST')
 
 export { getAdminInfo,
   login,
@@ -62,6 +70,10 @@ export { getAdminInfo,
   getResturants,
   getResturantsCount,
   getCategory,
-  searchplace
+  searchplace,
+    foodCategory,
+    updateResturant,
+    deleteResturant,
+    addCategory
   }
 

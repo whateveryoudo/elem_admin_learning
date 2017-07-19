@@ -192,7 +192,6 @@
                 }
             },
             async getResturants(){
-                debugger;
                 const {latitude, longitude} = this.city;
                 const restaurants = await getResturants({latitude, longitude, offset: this.offset, limit: this.limit});
                 this.tableData = [];
@@ -222,7 +221,7 @@
                 this.selectTable = row;
                 this.address.address = row.address;
                 this.dialogFormVisible = true;
-                this.selectedCategory = row.category.split('/');
+                this.selectedCategory = row.category.split('/');//默认联级值
                 if (!this.categoryOptions.length) {
                     this.getCategory();
                 }
