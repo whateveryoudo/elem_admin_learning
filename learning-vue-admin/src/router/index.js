@@ -9,6 +9,7 @@ const home = r => require.ensure([], () => r(require('@/page/home')), 'home');
 const userList = r => require.ensure([], () => r(require('@/page/userList')), 'userList');
 const shopList = r => require.ensure([], () => r(require('@/page/shopList')), 'shopList');
 const addGoods = r => require.ensure([], () => r(require('@/page/addGoods')), 'addGoods');
+const addShops = r => require.ensure([], () => r(require('@/page/addShops')), 'addShops');
 let routes = [
     {
         path: '/',
@@ -38,6 +39,11 @@ let routes = [
                 component : addGoods,
                 meta : ['添加数据','添加商品']
             },
+            {
+                path : '/addShops',
+                component : addShops,
+                meta : ['添加数据','添加商铺']
+            }
         ]
     }
 ]

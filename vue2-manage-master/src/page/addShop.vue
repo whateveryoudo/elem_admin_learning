@@ -3,7 +3,7 @@
         <head-top></head-top>
         <el-row style="margin-top: 20px;">
   			<el-col :span="12" :offset="4">
-		        <el-form :model="formData" :rules="rules" ref="formData" label-width="110px" class="demo-formData">
+		        <el-form :model="formData" :rules="rules" ref="formData" label-width="110px" class="demo-formData" >
 					<el-form-item label="店铺名称" prop="name">
 						<el-input v-model="formData.name"></el-input>
 					</el-form-item>
@@ -191,7 +191,6 @@
        	 			image_path: '',
        	 			business_license_image: '',
        	 			catering_service_license_image: '',
-       	 			
 		        },
 		        rules: {
 					name: [
@@ -331,7 +330,7 @@
 		    	this.$prompt('请输入活动详情', '提示', {
 		          	confirmButtonText: '确定',
 		          	cancelButtonText: '取消',
-		        }).then(({ value }) => {
+		        }).then(({ value }) => {//等同于th
 		        	if (value == null) {
 		        		this.$message({
 				            type: 'info',
