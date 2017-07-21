@@ -1,4 +1,24 @@
 //scss文件
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
+.table_container{
+  padding: 20px;
+}
+.Pagination{
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
 /*上传图片容器样式*/
 .avatar-uploader{
   width:120px;
