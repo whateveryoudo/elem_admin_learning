@@ -53,9 +53,28 @@ const foodCategory = (latitude,longitude) => fetch('/shopping/v2/restaurant/cate
 const updateResturant = data => fetch('/shopping/updateshop',data,'POST')
 //删除当前店铺
 const deleteResturant = restaurant_id => fetch('/shopping/restaurant/' + restaurant_id,{},'DELETE');
-//在当前店铺下添加食物
+//在当前店铺下添加食品分类
 const addCategory = data => fetch('/shopping/addcategory',data,'POST')
-
+//添加食品
+const addFood = data => fetch('/shopping/addfood', data, 'POST')
+//添加商铺
+const addShop = data => fetch('/shopping/addShop', data, 'POST');
+//获取食品列表总数
+const getFoodsCount = data => fetch('/shopping/v2/foods/count', data);
+//获取食品列表信息
+const getFoods = data => fetch('/shopping/v2/foods', data);
+//当前店铺信息
+const getResturantDetail = restaurant_id => fetch('/shopping/restaurant/' + restaurant_id);
+//获取分类信息
+const getMenuById = category_id => fetch('/shopping/v2/menu/' + category_id);
+//获取分类信息
+const getMenu = data => fetch('/shopping/v2/menu', data);
+//保存食品,跟新食品列表
+const updateFood = data => fetch('/shopping/v2/updatefood', data, 'POST');
+//删除当前食品
+const deleteFood = food_id => fetch('/shopping/v2/food/' + food_id, {}, 'DELETE');
+//获取用户分布城市
+const getUserCity = () => fetch('/v1/user/city/count');
 export { getAdminInfo,
   login,
   singout,
@@ -74,6 +93,16 @@ export { getAdminInfo,
     foodCategory,
     updateResturant,
     deleteResturant,
-    addCategory
+    addCategory,
+    addFood,
+    addShop,
+    getFoodsCount,
+    getFoods,
+    getResturantDetail,
+    getMenuById,
+    getMenu,
+    updateFood,
+    deleteFood,
+    getUserCity
   }
 

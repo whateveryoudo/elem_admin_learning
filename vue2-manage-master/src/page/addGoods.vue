@@ -99,7 +99,7 @@
 						      label="价格">
 						    </el-table-column>
 						    <el-table-column label="操作" >
-						    <template scope="scope"> 
+						    <template scope="scope">
 						        <el-button
 						          size="small"
 						          type="danger"
@@ -193,6 +193,7 @@
     		headTop,
     	},
     	created(){
+
     		if (this.$route.query.restaurant_id) {
     			this.restaurant_id = this.$route.query.restaurant_id;
     		}else{
@@ -297,14 +298,14 @@
 				}
 				return isRightType && isLt2M;
 			},
-			addspecs(){
+			addspecs(){//这里的添加不会提交到后台
 				this.foodForm.specs.push({...this.specsForm});
 				this.specsForm.specs = '';
 				this.specsForm.packing_fee = 0;
 				this.specsForm.price = 20;
 				this.dialogFormVisible = false;
 			},
-			handleDelete(index){
+			handleDelete(index){//这里的删除不会提交到后台
 				this.foodForm.specs.splice(index, 1);
 			},
 			tableRowClassName(row, index) {
@@ -315,6 +316,7 @@
 		        }
 		        return '';
 		    },
+
 		    addFood(foodForm){
 		    	this.$refs[foodForm].validate(async (valid) => {
 					if (valid) {

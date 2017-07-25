@@ -309,10 +309,10 @@
                 this.selectTable = {...row, ...{restaurant_name: restaurant.name, restaurant_address: restaurant.address, category_name: category.name}};
 
                 this.selectMenu = {label: category.name, value: row.category_id}
-                this.tableData.splice(row.index, 1, {...this.selectTable}); 
+                this.tableData.splice(row.index, 1, {...this.selectTable});
                 this.$nextTick(() => {
                     this.expendRow.push(row.index);
-                })  
+                })
                 if (type == 'edit' && this.restaurant_id != row.restaurant_id) {
                 	this.getMenu();
                 }

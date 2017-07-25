@@ -11,4 +11,6 @@ export default {
 
 <style lang="scss">
   @import "style/scss/common.scss";
+
+  @import "style/scss/public.scss";
 </style>

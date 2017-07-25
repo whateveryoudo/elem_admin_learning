@@ -1,10 +1,11 @@
 <template>
     <div class="fillcontainer">
-        <head-top></head-top>
+        <!--<head-top></head-top>-->
         <!--列表区-->
         <div class="table_container">
             <el-table
                 :data="tableData"
+                element-loading-text="拼命加载中" v-loading.body="loading"
                 style="width:100%">
                 <!--下方展开项-->
                 <el-table-column type="expand">
@@ -263,8 +264,11 @@
                     console.log('获取商铺种类失败',err);
                 }
             },
-            handleCurrentChange(){
-
+            handleCurrentChange(val){//翻页
+                this.currentPage = val;
+                this.offset = (val - 1) * this.limit;
+                //获取店铺列表
+                this.getResturants();
             },
             handleSizeChange(val){
                 console.log(`每页 ${val} 条`);

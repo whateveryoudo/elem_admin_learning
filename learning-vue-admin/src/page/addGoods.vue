@@ -1,6 +1,6 @@
 <template>
     <div>
-        <head-top></head-top>
+        <!--<head-top></head-top>-->
         <el-row style="margin-top:20px">
             <el-col :span="14" :offset="4">
                 <header class="form_header">选择食品种类</header>
@@ -51,8 +51,9 @@
                     </el-upload>
                   </el-form-item>
                   <el-form-item label="食品特点">
-                    <el-select :model="foodForm.attributes" multiple placeholder="请选择">
-                      <el-option v-for='item in foodForm.attributes' :model="item.value" :label="item.label" :key="item.value"></el-option>
+                      <!--多选 v-model绑定的是数组-->
+                    <el-select v-model="foodForm.attributes" multiple placeholder="请选择">
+                      <el-option v-for='item in attributes' :value="item.value" :label="item.label" :key="item.value"></el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item label="食品规格">
@@ -60,11 +61,11 @@
                     <el-radio class="radio" v-model="foodSpecs" label="more">多规格</el-radio>
                   </el-form-item>
                   <el-row v-if="foodSpecs == 'one'">
-                    <el-form-item label="包装费">
-                      <el-input-number v-model="foodForm.specs[0].packing_fee" :min="0" :max="100"></el-input-number>
+                    <el-form-item label="包装费" v-if="foodForm.specs.length">
+                      <el-input-number  v-model="foodForm.specs[0].packing_fee" :min="0" :max="100"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="价格">
-                      <el-input-number v-model="foodForm.specs[0].price" :min="0" :max="10000"></el-input-number>
+                    <el-form-item label="价格" v-if="foodForm.specs.length">
+                      <el-input-number  v-model="foodForm.specs[0].price" :min="0" :max="10000"></el-input-number>
                     </el-form-item>
                   </el-row>
                   <el-row v-else style="overflow: auto;text-align: center">
@@ -95,7 +96,7 @@
                       <el-input-number v-model="specsForm.packing_fee" :min="0" :max="100"></el-input-number>
                     </el-form-item>
                     <el-form-item label="价格" label-width="100px">
-                      <el-input-number v-mode="specsForm.price" :min="0" :max="10000"></el-input-number>
+                      <el-input-number v-model="specsForm.price" :min="0" :max="10000"></el-input-number>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
@@ -110,10 +111,12 @@
 <script>
     import headTop from '@/components/header/headTop'
     import { baseUrl,baseImgPath } from '@/config/env'
-    import { getCategory,addCategory } from '@/api/getData'
+    import { getCategory,addCategory,addFood } from '@/api/getData'
     export default{
         data(){
             return {
+                baseUrl,
+                baseImgPath,
                 //食品种类信息
                 categoryForm : {
                     categoryList : [],
@@ -126,13 +129,40 @@
                   image_path : '',
                   name : '',
                   description : '',
-                  activity : ''
+                    attributes : [],
+                  activity : '',
+                    specs : [{
+                        specs : '默认',
+                        packing_fee : 0,
+                        price : 20
+                    }]
                 },
+                //规格对象
+                specsForm : {
+                    specs : '默认',
+                    packing_fee : 0,
+                    price : 20
+                },
+                foodSpecs : 'one',
+                //属性列表
+                attributes: [{
+                    value: '新品',
+                    label: '新品'
+                }, {
+                    value: '招牌',
+                    label: '招牌'
+                }],
+                dialogFormVisible : false,
               foodrules : {
                 name: [
                   {required : true,message : '请输入食品名称',trigger : 'blur'}
                 ]
               },
+                specsFormrules : {
+                    specs : [
+                        {required : true,message : '请输入规格',trigger : 'blur'}
+                    ]
+                },
                 showAddCategory : false,//显示添加添加属性块
                 restaurant_id : '',
             }
@@ -166,6 +196,7 @@
                     }
                 })
             }
+            console.log(this.baseUrl);
             //初始化数据
             this.initData();
         },
@@ -194,6 +225,10 @@
             //控制属性显示切换
             addCategoryFun(){
                 this.showAddCategory = !this.showAddCategory;
+            },
+            //删除当前规格
+            handleDelete(index){
+                this.foodForm.specs.splice(index,1);
             },
             submitcategoryForm(categoryForm){//refs的name
                 this.$refs[categoryForm].validate(async (valid) => {
@@ -232,9 +267,56 @@
                     }
                 })
             },
+            //添加食品
+            addFood(foodForm){
+                this.$refs[foodForm].validate(async (valid) => {
+                    if(valid){//验证通过(该运算符...将一个数组，变为参数序列。)
+                        const params = {
+                            ...this.foodForm,
+                            category_id : this.selectValue.id,
+                            restaurant_id : this.restaurant_id
+                        }
+                        try{
+                            const res = await addFood(params);
+                            if(res.status == 1){
+                                this.$message({
+                                    type : 'success',
+                                    message : '添加成功'
+                                })
+                                //重置表单
+                                this.foodForm = {
+                                    name : '',
+                                    description : '',
+                                    image_path : '',
+                                    activity : '',
+                                    attributes : [],
+                                    specs : [
+                                        {
+                                            sepcs : '默认',
+                                            packing_fee : 0,
+                                            price : 20
+                                        }
+                                    ]
+                                }
+                            }else{
+                                this.$message({
+                                    type : 'error',
+                                    message : res.message
+                                })
+                            }
+                        }catch(err){
+                            this.$notify.error({
+                                title : '错误',
+                                message : '请检查输入是否正确',
+                                offset : 100
+                            })
+                        }
+                    }
+                })
+            },
             //上传图片
             uploadImg(res,file){
-                if(res.stauts == 1){
+                if(res.status == 1){
                   this.foodForm.image_path = res.image_path;
                 }else{
                   this.$message({
@@ -254,6 +336,15 @@
               this.$message.error('上传头像图片大小不能超过 2MB!');
             }
             return isRightType && isLt2M;
+          },
+            //添加一条规格
+            addspecs(){
+                this.foodForm.specs.push({...this.specsForm});
+                //制空弹窗
+                this.specsForm.specs = '';
+                this.specsForm.packing_fee = '';
+                this.specsForm.price = '';
+                this.dialogFormVisible = false;//关闭弹窗
           }
         }
     }

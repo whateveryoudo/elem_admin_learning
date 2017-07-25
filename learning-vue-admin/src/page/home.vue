@@ -1,7 +1,7 @@
 <!--主页-->
 <template>
     <div>
-        <head-top></head-top>
+        <!--<head-top></head-top>-->
         <section class="data_section">
             <header class="section_title">数据统计</header>
             <!--日统计数-->
