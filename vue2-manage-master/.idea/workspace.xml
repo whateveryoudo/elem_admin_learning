@@ -284,6 +284,9 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="c55326e9-f18f-4f2a-b149-b8e619f81bb7" name="Default" comment="" />
@@ -301,7 +304,7 @@
     <option name="totallyTimeSpent" value="56768000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1620" height="920" extended-state="0" />
+    <frame x="-9" y="-9" width="1620" height="920" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2579014" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -327,6 +330,14 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
