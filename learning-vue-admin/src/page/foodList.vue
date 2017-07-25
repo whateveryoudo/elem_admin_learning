@@ -1,7 +1,7 @@
 <!--食品列表-->
 <template>
     <div class="fillcontainer">
-        <head-top></head-top>
+        <!--<head-top></head-top>-->
         <div class="table_container">
             <el-table :data="foodData" @expand="expand" :expand-row-keys="expandRow" :row-key="row => row.index" element-loading-text="拼命加载中" v-loading.body="loading" style="width:100%">
                 <!--展开项-->

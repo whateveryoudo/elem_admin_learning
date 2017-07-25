@@ -1,6 +1,6 @@
 <template>
     <div>
-        <head-top></head-top>
+        <!--<head-top></head-top>-->
         <el-row>
             <el-col :span="14" :offset="4">
                 <el-form :model="shopForm" ref="shopForm" :rules="shopFormrules" label-width="110px" class="form">

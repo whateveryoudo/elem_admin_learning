@@ -11,9 +11,9 @@
   margin-bottom: 0;
   width: 50%;
 }
-.table_container{
-  padding: 20px;
-}
+//.table_container{
+//  padding: 20px;
+//}
 .Pagination{
   display: flex;
   justify-content: flex-start;
@@ -52,4 +52,13 @@
 /*表格cell*/
 .cell{
   text-align: center;
+}
+//通用顶部查询条件样式
+.toolbar{
+  background: #f2f2f2;
+  padding: 10px;
+  margin: 10px 0px;
+  .el-form-item{
+    margin-bottom:0;
+  }
 }

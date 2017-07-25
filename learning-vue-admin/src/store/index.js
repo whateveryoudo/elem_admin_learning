@@ -6,7 +6,8 @@ Vue.use(Vuex)
 
 const state = {
     adminInfo : {
-        avatar: 'default.jpg'
+        avatar: 'default.jpg',
+        userName : '测试用户'
     }
 }
 const mutations = {

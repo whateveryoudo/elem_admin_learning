@@ -13,54 +13,116 @@ const addShops = r => require.ensure([], () => r(require('@/page/addShops')), 'a
 const foodList = r => require.ensure([], () => r(require('@/page/foodList')), 'foodList');
 //图表
 const visitor = r => require.ensure([], () => r(require('@/page/visitor')), 'visitor');
+// let routes = [
+//     {
+//         path: '/',
+//         component: login,
+//     },
+//     {
+//         path : '/manage',
+//         component : manage,
+//         children : [
+//             {
+//                 path : '',
+//                 component : home,
+//                 meta : []
+//             },
+//             {
+//                 path : '/userList',
+//                 component : userList,
+//                 meta : ['数据管理','用户列表']
+//             },
+//             {
+//                 path : '/shopList',
+//                 component : shopList,
+//                 meta : ['数据管理','商家列表']
+//             },
+//             {
+//                 path : '/addGoods',
+//                 component : addGoods,
+//                 meta : ['添加数据','添加商品']
+//             },
+//             {
+//                 path : '/addShops',
+//                 component : addShops,
+//                 meta : ['添加数据','添加商铺']
+//             },
+//             {
+//                 path : '/foodList',
+//                 component : foodList,
+//                 meta : ['数据管理','食品列表']
+//             },
+//             {
+//                 path : '/visitor',
+//                 component : visitor,
+//                 meta : ['图表','用户分布']
+//             }
+//         ]
+//     }
+// ]
+//动态菜单
 let routes = [
     {
-        path: '/',
-        component: login
+        path : '/',
+        component : login,
+        hidden: true
     },
     {
         path : '/manage',
         component : manage,
+        name : '',
+        iconCls : 'el-icon-menu',
+        leaf: true,//只有一个节点
         children : [
             {
-                path : '',
-                component : home,
-                meta : []
-            },
+                path : '/home',
+                component :　home,
+                name : '首页',
+            }
+        ]
+    },
+    {
+        path : '/manage',
+        component : manage,
+        name : '数据管理',
+        iconCls : 'el-icon-document',
+        children : [
             {
                 path : '/userList',
-                component : userList,
-                meta : ['数据管理','用户列表']
+                component :　userList,
+                name : '用户列表',
             },
             {
                 path : '/shopList',
-                component : shopList,
-                meta : ['数据管理','商家列表']
-            },
-            {
-                path : '/addGoods',
-                component : addGoods,
-                meta : ['添加数据','添加商品']
-            },
-            {
-                path : '/addShops',
-                component : addShops,
-                meta : ['添加数据','添加商铺']
+                component :　shopList,
+                name : '商家列表',
             },
             {
                 path : '/foodList',
-                component : foodList,
-                meta : ['数据管理','食品列表']
+                component :　foodList,
+                name : '食品列表'
+            }
+        ]
+    },
+    {
+        path : '/manage',
+        component : manage,
+        name : '添加数据',
+        iconCls : 'el-icon-plus',
+        children : [
+            {
+                path : '/addGoods',
+                component :　addGoods,
+                name : '添加商品',
             },
             {
-                path : '/visitor',
-                component : visitor,
-                meta : ['图表','用户分布']
+                path : '/addShops',
+                component :　addShops,
+                name : '添加商铺',
             }
         ]
     }
 ]
-
 export default new Router({
   routes,
     strict: process.env.NODE_ENV !== 'production',
